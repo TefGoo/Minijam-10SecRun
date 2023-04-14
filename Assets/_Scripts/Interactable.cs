@@ -13,6 +13,10 @@ public class Interactable : MonoBehaviour
 
     public void Interact()
     {
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            AudioSource.PlayClipAtPoint(interactSound, transform.position);
+        }
         // Toggle the light when interacting with the NPC
         lightSwitch.Toggle();
         lightSwitch1.Toggle();
@@ -21,13 +25,5 @@ public class Interactable : MonoBehaviour
         lightSwitch4.Toggle();
         lightSwitch5.Toggle();
         lightSwitch6.Toggle();
-    }
-
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.E))
-        {
-            AudioSource.PlayClipAtPoint(interactSound, transform.position);
-        }
     }
 }

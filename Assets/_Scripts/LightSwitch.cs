@@ -17,4 +17,5 @@ public class LightSwitch : MonoBehaviour
         isOn = !isOn;
         lightSource.enabled = isOn;
     }
+
 }
