@@ -14,6 +14,8 @@ public class MoveObjectTrigger : MonoBehaviour
         {
             isMoving = true;
         }
+        // Disable the trigger
+        GetComponent<Collider>().enabled = false;
     }
 
     private void Update()

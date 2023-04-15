@@ -16,7 +16,7 @@ namespace SojaExiles
 
         void Start()
         {
-            open = false;
+            open = true;
             audioSource = GetComponent<AudioSource>(); // get the AudioSource component
         }
 

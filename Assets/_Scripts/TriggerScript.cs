@@ -27,5 +27,7 @@ public class TriggerScript : MonoBehaviour
                 audioSource.Play();
             }
         }
+        // Disable the trigger
+        GetComponent<Collider>().enabled = false;
     }
 }

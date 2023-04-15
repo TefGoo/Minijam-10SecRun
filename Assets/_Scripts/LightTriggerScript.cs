@@ -26,6 +26,8 @@ public class LightTriggerScript : MonoBehaviour
 
             StartCoroutine(TurnLightOnAndOff());
         }
+        // Disable the trigger
+        GetComponent<Collider>().enabled = false;
     }
 
     private IEnumerator TurnLightOnAndOff()
