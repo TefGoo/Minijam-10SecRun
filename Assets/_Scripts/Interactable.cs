@@ -25,5 +25,10 @@ public class Interactable : MonoBehaviour
         lightSwitch4.Toggle();
         lightSwitch5.Toggle();
         lightSwitch6.Toggle();
+
+        // Disable the trigger
+        GetComponent<Collider>().enabled = false;
     }
+
+
 }

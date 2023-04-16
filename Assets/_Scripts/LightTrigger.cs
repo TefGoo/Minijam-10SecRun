@@ -2,17 +2,17 @@ using UnityEngine;
 
 public class LightTrigger : MonoBehaviour
 {
-    public GameObject[] lights;
+    public AudioClip switchOnSound;
+
+    private bool hasTriggered = false;
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player"))
+        if (other.CompareTag("Player") && !hasTriggered)
         {
-            // Turn on all the lights
-            foreach (GameObject light in lights)
-            {
-                light.SetActive(true);
-            }
+            LightSwitch.TurnOnAllSwitches();
+            AudioSource.PlayClipAtPoint(switchOnSound, transform.position);
+            hasTriggered = true;
         }
     }
 }

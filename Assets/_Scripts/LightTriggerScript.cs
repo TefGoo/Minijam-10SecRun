@@ -40,4 +40,5 @@ public class LightTriggerScript : MonoBehaviour
         yield return new WaitForSeconds(0.3f);
         lightToActivate.enabled = false;
     }
+
 }

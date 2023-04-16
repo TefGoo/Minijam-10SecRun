@@ -34,6 +34,8 @@ public class TimerScript : MonoBehaviour
             }
             StartCoroutine(Countdown()); // Start the countdown
         }
+        // Disable the trigger
+        GetComponent<Collider>().enabled = false;
     }
 
     IEnumerator Countdown()
@@ -54,5 +56,6 @@ public class TimerScript : MonoBehaviour
         yield return new WaitForSeconds(2f); // Wait for 2 seconds before restarting the scene
         UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex); // Restart the scene
     }
+
 }
 
