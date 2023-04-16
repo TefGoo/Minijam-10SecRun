@@ -1,9 +1,11 @@
+using SojaExiles;
 using UnityEngine;
 
 public class FinalInteract : MonoBehaviour
 {
     public AudioClip interactSound;
     public GameObject canvasObject; // Reference to the canvas object to be displayed
+    public FirstPersonMovement playerMovement; // Reference to the player movement script/component
 
     private bool isCanvasDisplayed = false; // Flag to keep track of whether the canvas is displayed or not
 
@@ -21,6 +23,7 @@ public class FinalInteract : MonoBehaviour
                 AudioSource.PlayClipAtPoint(interactSound, transform.position);
                 canvasObject.SetActive(true); // Display the canvas
                 isCanvasDisplayed = true; // Set the flag to true
+                playerMovement.enabled = false; // Disable player movement
             }
         }
     }
@@ -33,6 +36,7 @@ public class FinalInteract : MonoBehaviour
             canvasObject.SetActive(false); // Hide the canvas
             isCanvasDisplayed = false; // Set the flag to false
             GetComponent<Collider>().enabled = false;
+            playerMovement.enabled = true; // Enable player movement
         }
     }
 }
