@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class MenuController : MonoBehaviour
 {
@@ -51,6 +52,7 @@ public class MenuController : MonoBehaviour
     {
         // Implement your code to quit the game here
         Application.Quit();
+        Debug.Log("Closing game...");
     }
 
     private void ToggleMenu()
@@ -71,5 +73,10 @@ public class MenuController : MonoBehaviour
             Cursor.lockState = CursorLockMode.Locked; // Lock the cursor to the center of the screen
             Cursor.visible = false; // Hide the cursor
         }
+    }
+
+    public void RestartGame()
+    {
+        SceneManager.LoadScene("SampleScene");
     }
 }
