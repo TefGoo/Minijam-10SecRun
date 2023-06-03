@@ -9,6 +9,7 @@ namespace SojaExiles
         public Animator openandclosewindow;
         public bool open;
         public Transform Player;
+        public GameObject indicatorSprite; // Reference to the 2D sprite
 
         public AudioClip openSound; // sound to play when window is opened
         public AudioClip closeSound; // sound to play when window is closed
@@ -18,6 +19,7 @@ namespace SojaExiles
         {
             open = true;
             audioSource = GetComponent<AudioSource>(); // get the AudioSource component
+            SetIndicatorSpriteVisibility(open);
         }
 
         void OnMouseOver()
@@ -58,6 +60,7 @@ namespace SojaExiles
                 audioSource.clip = openSound;
                 audioSource.Play();
             }
+            SetIndicatorSpriteVisibility(open);
             yield return new WaitForSeconds(.5f);
         }
 
@@ -71,7 +74,16 @@ namespace SojaExiles
                 audioSource.clip = closeSound;
                 audioSource.Play();
             }
+            SetIndicatorSpriteVisibility(open);
             yield return new WaitForSeconds(.5f);
+        }
+
+        void SetIndicatorSpriteVisibility(bool visible)
+        {
+            if (indicatorSprite != null)
+            {
+                indicatorSprite.SetActive(visible);
+            }
         }
     }
 }
