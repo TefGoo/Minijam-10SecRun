@@ -22,6 +22,9 @@ public class FirstPersonMovement : MonoBehaviour
     private AudioSource audioSource; // Reference to the AudioSource component
     private bool isMoving; // Tracks if the player is moving
 
+    public bool isMovementEnabled = true; // Flag to control player movement
+
+
     void Awake()
     {
         // Get the rigidbody on this.

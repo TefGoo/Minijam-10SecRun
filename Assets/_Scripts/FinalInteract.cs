@@ -1,80 +1,77 @@
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 public class FinalInteract : MonoBehaviour
 {
-    public AudioClip interactSound;
-    public GameObject canvasObject; // Reference to the canvas object to be displayed
-    public GameObject panelToDelay; // Reference to the panel that should have a delay
-    public float delay = 3f; // Delay time in seconds
+    public Canvas uiCanvas;
+    public GameObject playerCamera;
+    public GameObject secondPanel;
+    public float delayToShowPanel = 3f;
 
-    public FirstPersonMovement playerMovement; // Reference to the player movement script/component
-
-    private bool isCanvasDisplayed = false; // Flag to keep track of whether the canvas is displayed or not
-    private bool isInteracting = false; // Flag to determine if the player is currently interacting with the canvas
-
-    private void Start()
-    {
-        canvasObject.SetActive(false);
-        panelToDelay.SetActive(false);
-    }
+    private bool hasTriggered = false;
+    private bool isCanvasActive = false;
+    private float triggerTime;
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player"))
+        if (other.CompareTag("Player") && !hasTriggered)
         {
-            if (!isCanvasDisplayed) // If the canvas is not already displayed
+            // Activate the UI canvas
+            uiCanvas.enabled = true;
+            isCanvasActive = true;
+
+            // Disable player movement
+            FirstPersonMovement playerMovement = other.GetComponent<FirstPersonMovement>();
+            if (playerMovement != null)
             {
-                AudioSource.PlayClipAtPoint(interactSound, transform.position);
-                canvasObject.SetActive(true); // Display the canvas
-                isCanvasDisplayed = true; // Set the flag to true
-                playerMovement.enabled = false; // Disable player movement
-                isInteracting = true; // Set the flag to true to allow interaction with the canvas
-                Cursor.lockState = CursorLockMode.None; // Unlock the cursor to allow interaction
-                Cursor.visible = true; // Show the cursor
-
-                StartCoroutine(ShowDelayedPanel());
+                playerMovement.enabled = false;
             }
+
+            // Disable camera movement
+            FirstPersonLook playerLook = playerCamera.GetComponent<FirstPersonLook>();
+            if (playerLook != null)
+            {
+                playerLook.DisableCameraMovement();
+            }
+
+            // Unlock the cursor and make it visible
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+
+            // Set the trigger time to delay the second panel
+            triggerTime = Time.time;
+
+            // Set the trigger flag to prevent repeated triggering
+            hasTriggered = true;
         }
-    }
-
-    private System.Collections.IEnumerator ShowDelayedPanel()
-    {
-        yield return new WaitForSeconds(delay);
-
-        panelToDelay.SetActive(true);
     }
 
     private void Update()
     {
-        if (isInteracting)
+        // Check if the canvas is active and it's time to show the second panel
+        if (isCanvasActive && Time.time >= triggerTime + delayToShowPanel)
         {
-            // Check if the left mouse button is pressed to simulate button clicks
-            if (Input.GetMouseButtonDown(0))
+            // Show the second panel
+            secondPanel.SetActive(true);
+
+            // Unlock mouse movement and hide cursor
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+
+            // Enable player movement and camera rotation
+            FirstPersonMovement playerMovement = GetComponent<FirstPersonMovement>();
+            if (playerMovement != null)
             {
-                // Convert the mouse position to UI space
-                Vector2 mousePosition = Input.mousePosition;
-                RectTransformUtility.ScreenPointToLocalPointInRectangle(canvasObject.transform as RectTransform, mousePosition, null, out Vector2 localPoint);
-
-                // Create a pointer event and set its position to the local point within the UI
-                PointerEventData pointerEventData = new PointerEventData(UnityEngine.EventSystems.EventSystem.current);
-                pointerEventData.position = localPoint;
-
-                // Raycast to find the UI element under the mouse
-                System.Collections.Generic.List<UnityEngine.EventSystems.RaycastResult> results = new System.Collections.Generic.List<UnityEngine.EventSystems.RaycastResult>();
-                UnityEngine.EventSystems.EventSystem.current.RaycastAll(pointerEventData, results);
-
-                // Trigger the UI button click if a button is found
-                foreach (UnityEngine.EventSystems.RaycastResult result in results)
-                {
-                    UnityEngine.UI.Button button = result.gameObject.GetComponent<UnityEngine.UI.Button>();
-                    if (button != null)
-                    {
-                        button.onClick.Invoke();
-                        break;
-                    }
-                }
+                playerMovement.enabled = true;
             }
+
+            FirstPersonLook playerLook = playerCamera.GetComponent<FirstPersonLook>();
+            if (playerLook != null)
+            {
+                playerLook.EnableCameraMovement();
+            }
+
+            // Set the timescale back to 1
+            Time.timeScale = 1f;
         }
     }
 }

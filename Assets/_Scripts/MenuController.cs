@@ -77,7 +77,7 @@ public class MenuController : MonoBehaviour
         }
     }
 
-    private void EnablePlayerMovement()
+    public void EnablePlayerMovement()
     {
         playerMovement.enabled = true;
         if (activePanelIndex == 0)
@@ -87,7 +87,7 @@ public class MenuController : MonoBehaviour
         Time.timeScale = 1f; // Resume the time
     }
 
-    private void DisablePlayerMovement()
+    public void DisablePlayerMovement()
     {
         playerMovement.enabled = false;
         isCameraMovementEnabled = false;
